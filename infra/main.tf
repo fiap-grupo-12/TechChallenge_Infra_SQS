@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 data "aws_lambda_function" "lambda_pedido" {
-  function_name = "lambda_pedido_function"
+  function_name = "lambda_pagamento_pedido"
 }
 
 resource "aws_sqs_queue" "my_queue" {
