@@ -2,10 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
-
 terraform {
   backend "s3" {
     bucket = "terraform-tfstate-grupo12-fiap-2024"
