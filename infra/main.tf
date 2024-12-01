@@ -34,7 +34,28 @@ resource "aws_lambda_event_source_mapping" "sqs_to_lambda_pagamento_pedido" {
   enabled          = true
 }
 
+
+
 #sqs_solicita_pagamento
+data "aws_lambda_function" "lambda_sqs_pagamento" {
+  function_name = "lambda_sqs_pagamento"
+}
+
 resource "aws_sqs_queue" "solicita_pagamento" {
   name = "sqs_solicita_pagamento"
+}
+
+resource "aws_lambda_permission" "permission_lambda_sqs_pagamento" {
+  statement_id  = "AllowSQSTrigger"
+  action        = "lambda:InvokeFunction"
+  function_name = data.aws_lambda_function.lambda_sqs_pagamento.function_name
+  principal     = "sqs.amazonaws.com"
+  source_arn    = aws_sqs_queue.solicita_pagamento.arn
+}
+
+resource "aws_lambda_event_source_mapping" "sqs_to_lambda_sqs_pagamento" {
+  event_source_arn = aws_sqs_queue.solicita_pagamento.arn
+  function_name    = data.aws_lambda_function.lambda_sqs_pagamento.function_name
+  batch_size       = 10
+  enabled          = true
 }
